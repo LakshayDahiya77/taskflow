@@ -3,9 +3,9 @@ import "./App.css";
 import Task from "./components/Task";
 import { ThemeContext } from './components/ThemeContext';
 
-function TaskSection({ title, children }) {
+function TaskSection({ title, children,className }) {
   return (
-    <div className="task-section">
+    <div className={`task-section ${className}`}>
       <h2 className="task-section-heading">{title}</h2>
       {children}
     </div>
@@ -151,11 +151,12 @@ function App() {
           />
         ))}
       </TaskSection>
-      <TaskSection title="Completed Tasks" > 
+      <TaskSection title="Completed Tasks" className="completed-tasks-section">  
         {completeTasks.map(item => (
           <Task
             key={item.id}
             {...item}
+            className="completed-task"
             onToggleStatus={() => toggleTaskStatus(item.id)}
             onDeleteTask={() => deleteTask(item.id)}
           />

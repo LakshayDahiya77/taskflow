@@ -215,6 +215,11 @@ button:hover {
   margin-bottom: 15px;
 }
 
+.completed-tasks-section{
+  opacity: 0.7;
+}
+
+
 .forum-theme-slider {
   display: flex;
   flex-direction: row;
@@ -246,7 +251,7 @@ button:hover {
 
 .theme-icon {
   font-size: 25px;
-  padding: 0;
+  padding: 2px;
 }
 
 [data-theme="light"] .sun {
@@ -254,6 +259,7 @@ button:hover {
 }
 [data-theme="dark"] .sun {
   color: #FFD700;
+  max-width: 23px;
 }
 
 [data-theme="dark"] .moon {
@@ -261,6 +267,7 @@ button:hover {
 }
 [data-theme="light"] .moon {
   color: rgb(64, 62, 62); 
+  max-width: 23px;
 }
 
 .delete-task:hover{
@@ -296,6 +303,27 @@ button:hover {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
   }
+  .completed-task{
+    opacity: 0.5;
+  }
+
+
+  .completed-task .buttons-bar{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+  
+  .completed-task .buttons-bar .delete-task{
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+
+  .completed-task .buttons-bar .mark-status{
+    grid-column-start: 1;
+    grid-column-end: 2;
+  }
+
   .mark-status{
     grid-column-start: 1;
     grid-column-end: 3;
@@ -303,8 +331,7 @@ button:hover {
   .update-task{
     grid-column-start: 1;
     grid-column-end: 1;
-  }
- 
+  } 
   
   button {
     width: 100%;

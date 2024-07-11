@@ -31,6 +31,7 @@ export default function Task(props) {
     time,
     description,
     status,
+    className, 
     onToggleStatus,
     onDeleteTask,
     onEditTask,
@@ -51,8 +52,8 @@ export default function Task(props) {
           <h2 className="task-section-heading">Add New Task</h2>
          
             <button className="theme-button" onClick={toggleTheme}>
-              <span className="theme-icon sun">☀</span>
-              <span className="theme-icon moon">☽</span>
+            <img className="theme-icon sun" src="/images/light-mode.png"></img>
+              <img className="theme-icon moon" src="/images/dark-mode.png"></img>
             </button>
         
         </div>
@@ -93,7 +94,7 @@ export default function Task(props) {
   }
 
   return (
-    <div className="task-container">
+    <div className={`task-container ${className}`}>
       <div className="task-header">
         {editingTask ? (
           <input
