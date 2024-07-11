@@ -19,6 +19,7 @@ function Logo() {
   return (
     <>
       <img src="/images/logo.png" alt="logo" id="app-logo" />
+      <img src="/images/logo-light.png" alt="logo" id="app-logo-light" />
     </>
   );
 }
