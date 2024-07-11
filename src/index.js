@@ -3,24 +3,33 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from './components/ThemeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-function Author()
-{
-  return(
+function Author() {
+  return (
     <footer>
       © 2024 Lakshay Dahiya
     </footer>
-  )
+  );
+}
+
+function Logo() {
+  return (
+    <>
+      <img src="/images/logo.png" alt="logo" id="app-logo" />
+    </>
+  );
 }
 
 root.render(
   <React.StrictMode>
-    <>
-    <App />
-    <Author/>
-    </>
+    <ThemeProvider>
+      <Logo />
+      <App />
+      <Author />
+    </ThemeProvider>
   </React.StrictMode>
 );
 

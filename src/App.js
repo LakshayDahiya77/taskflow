@@ -1,19 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./App.css";
-import data from "./data";
 import Task from "./components/Task";
+import { ThemeContext } from './components/ThemeContext';
 
 function TaskSection({ title, children }) {
   return (
     <div className="task-section">
-      <h2>{title}</h2>
+      <h2 className="task-section-heading">{title}</h2>
       {children}
     </div>
   );
 }
 
+function getFormattedTime() {
+  return new Date().toTimeString().slice(0, 5);
+}
+
+function getFormattedDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function formatDate(dateString) {
+  return new Date(dateString).toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+
+function formatTime(timeString) {
+  const [hours, minutes] = timeString.split(':');
+  return new Date(0, 0, 0, hours, minutes).toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+}
+
+function formatDateTime(dateString, timeString) {
+  return `${formatDate(dateString)} | ${formatTime(timeString)}`;
+}
+
+const getInitialTasks = () => {
+  const storedTasks = localStorage.getItem("tasks");
+  return storedTasks ? JSON.parse(storedTasks) : [];
+};
+
 function App() {
-  const [tasks, setTasks] = useState(data);
+  const [tasks, setTasks] = useState(getInitialTasks());
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editValues, setEditValues] = useState({
     title: "",
@@ -24,9 +58,15 @@ function App() {
   const [newTaskValues, setNewTaskValues] = useState({
     title: "",
     description: "",
-    date: "",
-    time: "",
+    date: getFormattedDate(),
+    time: getFormattedTime(),
   });
+
+  const { toggleTheme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const handleNewTaskChange = (e) => {
     const { name, value } = e.target;
@@ -34,38 +74,37 @@ function App() {
   };
 
   const addTask = () => {
+    if (!newTaskValues.title && !newTaskValues.description) {
+      return; 
+    }
+
     const newTask = {
       id: tasks.length + 1,
-      title: newTaskValues.title,
-      description: newTaskValues.description,
-      date: newTaskValues.date,
-      time: newTaskValues.time,
+      ...newTaskValues,
       status: false,
     };
     setTasks([...tasks, newTask]);
-    setNewTaskValues({ title: "", description: "", date: "", time: "" });
+    setNewTaskValues({
+      title: "",
+      description: "",
+      date: getFormattedDate(),
+      time: getFormattedTime()
+    });
   };
 
   const toggleTaskStatus = (id) => {
-    const newTasks = tasks.map((task) =>
+    setTasks(tasks.map(task =>
       task.id === id ? { ...task, status: !task.status } : task
-    );
-    setTasks(newTasks);
+    ));
   };
 
   const deleteTask = (id) => {
-    const newTasks = tasks.filter((task) => task.id !== id);
-    setTasks(newTasks);
+    setTasks(tasks.filter(task => task.id !== id));
   };
 
   const startEditingTask = (task) => {
     setEditingTaskId(task.id);
-    setEditValues({
-      title: task.title,
-      description: task.description,
-      date: task.date,
-      time: task.time,
-    });
+    setEditValues({ ...task });
   };
 
   const handleEditChange = (e) => {
@@ -74,10 +113,9 @@ function App() {
   };
 
   const saveTask = () => {
-    const newTasks = tasks.map((task) =>
+    setTasks(tasks.map(task =>
       task.id === editingTaskId ? { ...task, ...editValues } : task
-    );
-    setTasks(newTasks);
+    ));
     setEditingTaskId(null);
   };
 
@@ -85,8 +123,8 @@ function App() {
     setEditingTaskId(null);
   };
 
-  const incompleteTasks = tasks.filter((task) => !task.status);
-  const completeTasks = tasks.filter((task) => task.status);
+  const incompleteTasks = tasks.filter(task => !task.status);
+  const completeTasks = tasks.filter(task => task.status);
 
   return (
     <div className="app">
@@ -97,16 +135,11 @@ function App() {
         newTaskValues={newTaskValues}
       />
 
-      <TaskSection title="Incomplete Tasks">
-        {incompleteTasks.map((item) => (
+      <TaskSection title="Incomplete Tasks" >
+        {incompleteTasks.map(item => (
           <Task
             key={item.id}
-            id={item.id}
-            title={item.title}
-            date={item.date}
-            time={item.time}
-            description={item.description}
-            status={item.status}
+            {...item}
             onToggleStatus={() => toggleTaskStatus(item.id)}
             onDeleteTask={() => deleteTask(item.id)}
             onEditTask={() => startEditingTask(item)}
@@ -118,22 +151,17 @@ function App() {
           />
         ))}
       </TaskSection>
-      <TaskSection title="Completed Tasks">
-        {completeTasks.map((item) => (
+      <TaskSection title="Completed Tasks" > 
+        {completeTasks.map(item => (
           <Task
             key={item.id}
-            id={item.id}
-            title={item.title}
-            date={item.date}
-            time={item.time}
-            description={item.description}
-            status={item.status}
+            {...item}
             onToggleStatus={() => toggleTaskStatus(item.id)}
             onDeleteTask={() => deleteTask(item.id)}
           />
         ))}
       </TaskSection>
-    </div>
+     </div>
   );
 }
 
