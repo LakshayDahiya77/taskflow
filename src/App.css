@@ -97,6 +97,7 @@ body {
   max-width: 100%;
   margin: 0 auto;
   padding: 10px;
+  padding-top: 0;
 }
 
 .task-header {
@@ -282,10 +283,12 @@ button:hover {
   .add-task-date{
     grid-column-start: 1;
     grid-column-end: 2;
+    width: 100%;
   }
   .add-task-time{
     grid-column-start: 2;
     grid-column-end: 3;
+    width: 100%;
   }
   
   .buttons-bar {
