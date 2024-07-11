@@ -58,7 +58,7 @@
   display: block;
   max-width: 100%;
   border-radius: var(--container-radius);
-  margin: 20px auto;
+  margin: 10px auto;
 }
 
 body {
@@ -96,7 +96,7 @@ body {
 #root {
   max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .task-header {
@@ -256,7 +256,6 @@ button:hover {
 }
 
 [data-theme="dark"] .moon {
-  color: rgb(64, 62, 62); 
   display: none;
 }
 [data-theme="light"] .moon {
@@ -278,10 +277,12 @@ button:hover {
   .add-task-title{
     grid-column-start: 1;
     grid-column-end: 3;
+    width: 100%;
   }
   .add-task-date{
     grid-column-start: 1;
     grid-column-end: 1;
+    width: 100%;
   }
   
   .buttons-bar {
